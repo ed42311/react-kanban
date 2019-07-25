@@ -1,30 +1,28 @@
-import { readFileSync } from "fs";
-import React from "react";
-import { renderToString } from "react-dom/server";
-import { createStore } from "redux";
-import { Provider } from "react-redux";
-import { StaticRouter } from "react-router";
-import { HeadCollector } from "react-head";
-import { resetContext } from "react-beautiful-dnd";
-import App from "../app/components/App";
-import rootReducer from "../app/reducers";
+import { readFileSync } from 'fs'
+import React from 'react'
+import { renderToString } from 'react-dom/server'
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
+import { StaticRouter } from 'react-router'
+import { HeadCollector } from 'react-head'
+import { resetContext } from 'react-beautiful-dnd'
+import App from '../app/components/App'
+import rootReducer from '../app/reducers'
 
 // Get the manifest which contains the names of the generated files. The files contain hashes
 // that change every time they are updated, which enables aggressive caching.
-const manifest = JSON.parse(
-  readFileSync(`./dist/public/manifest.json`, "utf8")
-);
+const manifest = JSON.parse(readFileSync(`./dist/public/manifest.json`, 'utf8'))
 
-const css = readFileSync("./dist/public/main.css", "utf8");
+const css = readFileSync('./dist/public/main.css', 'utf8')
 
 const renderPage = (req, res) => {
   // Put initialState (which contains board state) into a redux store that will be passed to the client
   // through the window object in the generated html string
-  const store = createStore(rootReducer, req.initialState);
+  const store = createStore(rootReducer, req.initialState)
 
-  const context = {};
-  const headTags = [];
-  resetContext();
+  const context = {}
+  const headTags = []
+  resetContext()
 
   // This is where the magic happens
   const appString = renderToString(
@@ -35,9 +33,9 @@ const renderPage = (req, res) => {
         </StaticRouter>
       </Provider>
     </HeadCollector>
-  );
+  )
 
-  const preloadedState = store.getState();
+  const preloadedState = store.getState()
 
   const html = `
     <!DOCTYPE html>
@@ -63,10 +61,10 @@ const renderPage = (req, res) => {
       <script>
         window.PRELOADED_STATE = ${JSON.stringify(preloadedState)}
       </script>
-      <script src=${manifest["main.js"]}></script>
+      <script src=${manifest['main.js']}></script>
     </html>
-  `;
-  res.send(html);
-};
+  `
+  res.send(html)
+}
 
-export default renderPage;
+export default renderPage

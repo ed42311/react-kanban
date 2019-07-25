@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { Title } from "react-head";
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import classnames from "classnames";
-import List from "../List/List";
-import ListAdder from "../ListAdder/ListAdder";
-import Header from "../Header/Header";
-import BoardHeader from "../BoardHeader/BoardHeader";
-import "./Board.scss";
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { Title } from 'react-head'
+import { DragDropContext, Droppable } from 'react-beautiful-dnd'
+import classnames from 'classnames'
+import List from '../List/List'
+import ListAdder from '../ListAdder/ListAdder'
+import Header from '../Header/Header'
+import BoardHeader from '../BoardHeader/BoardHeader'
+import './Board.scss'
 
 class Board extends Component {
   static propTypes = {
@@ -18,47 +18,47 @@ class Board extends Component {
     boardId: PropTypes.string.isRequired,
     boardTitle: PropTypes.string.isRequired,
     boardColor: PropTypes.string.isRequired,
-    dispatch: PropTypes.func.isRequired
-  };
+    dispatch: PropTypes.func.isRequired,
+  }
 
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       startX: null,
-      startScrollX: null
-    };
+      startScrollX: null,
+    }
   }
 
   // boardId is stored in the redux store so that it is available inside middleware
   componentDidMount = () => {
-    const { boardId, dispatch } = this.props;
+    const { boardId, dispatch } = this.props
     dispatch({
-      type: "PUT_BOARD_ID_IN_REDUX",
-      payload: { boardId }
-    });
-  };
+      type: 'PUT_BOARD_ID_IN_REDUX',
+      payload: { boardId },
+    })
+  }
 
   handleDragEnd = ({ source, destination, type }) => {
     // dropped outside the list
     if (!destination) {
-      return;
+      return
     }
-    const { dispatch, boardId } = this.props;
+    const { dispatch, boardId } = this.props
 
     // Move list
-    if (type === "COLUMN") {
+    if (type === 'COLUMN') {
       // Prevent update if nothing has changed
       if (source.index !== destination.index) {
         dispatch({
-          type: "MOVE_LIST",
+          type: 'MOVE_LIST',
           payload: {
             oldListIndex: source.index,
             newListIndex: destination.index,
-            boardId: source.droppableId
-          }
-        });
+            boardId: source.droppableId,
+          },
+        })
       }
-      return;
+      return
     }
     // Move card
     if (
@@ -66,76 +66,76 @@ class Board extends Component {
       source.droppableId !== destination.droppableId
     ) {
       dispatch({
-        type: "MOVE_CARD",
+        type: 'MOVE_CARD',
         payload: {
           sourceListId: source.droppableId,
           destListId: destination.droppableId,
           oldCardIndex: source.index,
           newCardIndex: destination.index,
-          boardId
-        }
-      });
+          boardId,
+        },
+      })
     }
-  };
+  }
 
   // The following three methods implement dragging of the board by holding down the mouse
   handleMouseDown = ({ target, clientX }) => {
-    if (target.className !== "list-wrapper" && target.className !== "lists") {
-      return;
+    if (target.className !== 'list-wrapper' && target.className !== 'lists') {
+      return
     }
-    window.addEventListener("mousemove", this.handleMouseMove);
-    window.addEventListener("mouseup", this.handleMouseUp);
+    window.addEventListener('mousemove', this.handleMouseMove)
+    window.addEventListener('mouseup', this.handleMouseUp)
     this.setState({
       startX: clientX,
-      startScrollX: window.scrollX
-    });
-  };
+      startScrollX: window.scrollX,
+    })
+  }
 
   // Go to new scroll position every time the mouse moves while dragging is activated
   handleMouseMove = ({ clientX }) => {
-    const { startX, startScrollX } = this.state;
-    const scrollX = startScrollX - clientX + startX;
-    window.scrollTo(scrollX, 0);
-    const windowScrollX = window.scrollX;
+    const { startX, startScrollX } = this.state
+    const scrollX = startScrollX - clientX + startX
+    window.scrollTo(scrollX, 0)
+    const windowScrollX = window.scrollX
     if (scrollX !== windowScrollX) {
       this.setState({
-        startX: clientX + windowScrollX - startScrollX
-      });
+        startX: clientX + windowScrollX - startScrollX,
+      })
     }
-  };
+  }
 
   // Remove drag event listeners
   handleMouseUp = () => {
     if (this.state.startX) {
-      window.removeEventListener("mousemove", this.handleMouseMove);
-      window.removeEventListener("mouseup", this.handleMouseUp);
-      this.setState({ startX: null, startScrollX: null });
+      window.removeEventListener('mousemove', this.handleMouseMove)
+      window.removeEventListener('mouseup', this.handleMouseUp)
+      this.setState({ startX: null, startScrollX: null })
     }
-  };
+  }
 
   handleWheel = ({ target, deltaY }) => {
     // Scroll page right or left as long as the mouse is not hovering a card-list (which could have vertical scroll)
     if (
-      target.className !== "list-wrapper" &&
-      target.className !== "lists" &&
-      target.className !== "open-composer-button" &&
-      target.className !== "list-title-button"
+      target.className !== 'list-wrapper' &&
+      target.className !== 'lists' &&
+      target.className !== 'open-composer-button' &&
+      target.className !== 'list-title-button'
     ) {
-      return;
+      return
     }
     // Move the board 80 pixes on every wheel event
     if (Math.sign(deltaY) === 1) {
-      window.scrollTo(window.scrollX + 80, 0);
+      window.scrollTo(window.scrollX + 80, 0)
     } else if (Math.sign(deltaY) === -1) {
-      window.scrollTo(window.scrollX - 80, 0);
+      window.scrollTo(window.scrollX - 80, 0)
     }
-  };
+  }
 
   render = () => {
-    const { lists, boardTitle, boardId, boardColor } = this.props;
+    const { lists, boardTitle, boardId, boardColor } = this.props
     return (
       <>
-        <div className={classnames("board", boardColor)}>
+        <div className={classnames('board', boardColor)}>
           <Title>{boardTitle} | React Kanban</Title>
           <Header />
           <BoardHeader />
@@ -172,18 +172,18 @@ class Board extends Component {
           <div className="board-underlay" />
         </div>
       </>
-    );
-  };
+    )
+  }
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const { board } = ownProps;
+  const { board } = ownProps
   return {
     lists: board.lists.map(listId => state.listsById[listId]),
     boardTitle: board.title,
     boardColor: board.color,
-    boardId: board._id
-  };
-};
+    boardId: board._id,
+  }
+}
 
-export default connect(mapStateToProps)(Board);
+export default connect(mapStateToProps)(Board)

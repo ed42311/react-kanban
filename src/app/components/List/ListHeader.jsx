@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import Textarea from "react-textarea-autosize";
-import { Button, Wrapper, Menu, MenuItem } from "react-aria-menubutton";
-import FaTrash from "react-icons/lib/fa/trash";
-import "./ListHeader.scss";
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import Textarea from 'react-textarea-autosize'
+import { Button, Wrapper, Menu, MenuItem } from 'react-aria-menubutton'
+import FaTrash from 'react-icons/lib/fa/trash'
+import './ListHeader.scss'
 
 class ListTitle extends Component {
   static propTypes = {
@@ -13,69 +13,69 @@ class ListTitle extends Component {
     boardId: PropTypes.string.isRequired,
     cards: PropTypes.arrayOf(PropTypes.string).isRequired,
     dragHandleProps: PropTypes.object.isRequired,
-    dispatch: PropTypes.func.isRequired
-  };
+    dispatch: PropTypes.func.isRequired,
+  }
 
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       isOpen: false,
-      newTitle: props.listTitle
-    };
+      newTitle: props.listTitle,
+    }
   }
 
   handleChange = event => {
-    this.setState({ newTitle: event.target.value });
-  };
+    this.setState({ newTitle: event.target.value })
+  }
 
   handleKeyDown = event => {
     if (event.keyCode === 13) {
-      event.preventDefault();
-      this.handleSubmit();
+      event.preventDefault()
+      this.handleSubmit()
     } else if (event.keyCode === 27) {
-      this.revertTitle();
+      this.revertTitle()
     }
-  };
+  }
 
   handleSubmit = () => {
-    const { newTitle } = this.state;
-    const { listTitle, listId, dispatch } = this.props;
-    if (newTitle === "") return;
+    const { newTitle } = this.state
+    const { listTitle, listId, dispatch } = this.props
+    if (newTitle === '') return
     if (newTitle !== listTitle) {
       dispatch({
-        type: "CHANGE_LIST_TITLE",
-        payload: { listTitle: newTitle, listId }
-      });
+        type: 'CHANGE_LIST_TITLE',
+        payload: { listTitle: newTitle, listId },
+      })
     }
-    this.setState({ isOpen: false });
-  };
+    this.setState({ isOpen: false })
+  }
 
   revertTitle = () => {
-    this.setState({ newTitle: this.props.listTitle, isOpen: false });
-  };
+    this.setState({ newTitle: this.props.listTitle, isOpen: false })
+  }
 
   deleteList = () => {
-    const { listId, cards, boardId, dispatch } = this.props;
+    const { listId, cards, boardId, dispatch } = this.props
     dispatch({
-      type: "DELETE_LIST",
-      payload: { cards, listId, boardId }
-    });
-  };
+      type: 'DELETE_LIST',
+      payload: { cards, listId, boardId },
+    })
+  }
 
   openTitleEditor = () => {
-    this.setState({ isOpen: true });
-  };
+    this.setState({ isOpen: true })
+  }
 
   handleButtonKeyDown = event => {
     if (event.keyCode === 13) {
-      event.preventDefault();
-      this.openTitleEditor();
+      event.preventDefault()
+      this.openTitleEditor()
     }
-  };
+  }
 
   render() {
-    const { isOpen, newTitle } = this.state;
-    const { dragHandleProps, listTitle } = this.props;
+    const { isOpen, newTitle } = this.state
+    const { dragHandleProps, listTitle } = this.props
     return (
       <div className="list-header">
         {isOpen ? (
@@ -98,8 +98,8 @@ class ListTitle extends Component {
             tabIndex={0}
             onClick={this.openTitleEditor}
             onKeyDown={event => {
-              this.handleButtonKeyDown(event);
-              dragHandleProps.onKeyDown(event);
+              this.handleButtonKeyDown(event)
+              dragHandleProps.onKeyDown(event)
             }}
             className="list-title-button"
           >
@@ -116,8 +116,8 @@ class ListTitle extends Component {
           </Menu>
         </Wrapper>
       </div>
-    );
+    )
   }
 }
 
-export default connect()(ListTitle);
+export default connect()(ListTitle)

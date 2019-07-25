@@ -1,12 +1,9 @@
-<!-- Description: A Trello-like application built with React and Redux. Take a look at the live website:  -->
+# Kanban Trello Board
 
-# React Kanban
+Stolen with impunity from:  [Markus Englund](https://github.com/markusenglund) <markus.s.englund@gmail.com>
+The original github repo is [here](https://github.com/markusenglund/react-kanban)
 
 A server-rendered React app inspired by [Trello](https://trello.com/home).
-
-![react kanban example](https://github.com/yogaboll/react-kanban/blob/master/example.gif?raw=true)
-
-[Check out the live website](https://www.reactkanban.com)
 
 ### Features
 
@@ -26,50 +23,29 @@ A server-rendered React app inspired by [Trello](https://trello.com/home).
 * [MongoDB](https://github.com/mongodb/mongo)
 * [Passport](https://github.com/jaredhanson/passport)
 
-
-### Development
-
-Setting up the full app with your own mongoDB instance and auth credentials for Twitter and Google sign-in requires significant effort. Use the simplified set up if you don't want to bother with that.
-
-#### Simplified setup
+#### Setup
 
 ```shell
-# Clone the simple-dev branch which does not include db and social sign-in stuff
-git clone https://github.com/yogaboll/react-kanban.git -b simple-dev
+git clone https://github.com/ed42311/react-kanban.git
 
 cd react-kanban
 
-npm install
-
-npm run build
-
-# Open a second terminal window and run:
-npm run serve
+yarn install
 ```
 
-The app will run on http://127.0.0.1:1337
+##### Mongodb
 
-#### Full setup
+Mac OSx
 
-```shell
-git clone https://github.com/yogaboll/react-kanban.git
+##### Twitter Sign In
 
-cd react-kanban
+TODO: Document Process
 
-npm install
-```
+##### Google Sign In
 
-You need to add your own mongoDB url as well as auth credentials for the Google and Twitter sign in. You need to create a file with the name `.env` in the root directory with the following variables:
+TODO: Document Process
 
 ```
-MONGODB_URL
-MONGODB_NAME
-TWITTER_API_KEY
-TWITTER_API_SECRET
-GOOGLE_CLIENT_ID
-GOOGLE_CLIENT_SECRET
-SESSION_SECRET
-
 # Has to be port 1337
 ROOT_URL=http://127.0.0.1:1337
 ```

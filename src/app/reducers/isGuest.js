@@ -1,11 +1,11 @@
 const isGuest = (state = false, action) => {
   switch (action.type) {
-    case "ENTER_AS_GUEST": {
-      return true;
+    case 'ENTER_AS_GUEST': {
+      return true
     }
     default:
-      return state;
+      return state
   }
-};
+}
 
-export default isGuest;
+export default isGuest
